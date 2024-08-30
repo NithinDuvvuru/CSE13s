@@ -1,0 +1,80 @@
+#creating example output
+echo 4 > expected.txt
+echo 0 > expected2.txt
+#running program and saving output
+./calc 4 0 > output.txt
+#making sure exit code is zero
+if [ $? -ne 0]; then
+        echo "invalid exit code" $?
+        rm expected.txt
+	rm expected2.txt
+        rm output.txt
+        exit 1
+fi
+
+./calc 0 4 > output2.txt
+if [ $? -ne 0]; then
+        echo "invalid exit code" $?
+        rm expected.txt
+	rm expected2.txt
+        rm output.txt
+   	rm output2.txt
+   	exit 1
+fi
+
+./calc 0 0 > output3.txt
+if [ $? -ne 0]; then
+        echo "invalid exit code" $?
+        rm expected.txt
+	rm expected2.txt
+        rm output.txt
+        rm output2.txt
+	rm output3.txt
+        exit 1
+fi
+
+#checking for differences
+diff output.txt expected.txt
+if [ $? -ne 0 ]; then
+        echo "Answer is incorrect"
+        rm expected.txt
+	rm expected2.txt
+	rm output.txt
+	rm output2.txt
+	rm output3.txt
+	exit 1
+fi
+
+diff output2.txt expected.txt
+if [ $? -ne 0 ]; then
+        echo "Answer is incorrect"
+        rm expected.txt
+	rm expected2.txt
+        rm output.txt
+        rm output2.txt
+	rm output3.txt
+	exit 1
+fi
+
+diff output3.txt expected2.txt
+if [ $? -ne 0 ]; then
+        echo "Answer is incorrect"
+        rm expected.txt
+	rm expected2.txt
+        rm output.txt
+        rm output2.txt
+        rm output3.txt
+       	exit 1
+fi
+
+
+#success message
+echo "Zero tests passed"
+
+#cleaning up files
+rm expected.txt
+rm expected2.txt
+rm output.txt
+rm output2.txt
+rm output3.txt
+exit 0
